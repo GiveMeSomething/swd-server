@@ -16,9 +16,24 @@ module.exports = {
   },
   ignorePatterns: ['.eslintrc.js'],
   rules: {
+    // Add conflict prettier setting here
+    'prettier/prettier': [
+      'error',
+      {
+        singleQuote: true,
+        trailingComma: 'all',
+        tabWidth: 2,
+        arrowParens: 'always',
+        endOfLine: 'lf',
+        printWidth: 80,
+        semi: true,
+      },
+    ],
     '@typescript-eslint/interface-name-prefix': 'off',
-    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'error',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-explicit-any': 'error',
+    '@typescript-eslint/no-unused-vars': 'error',
+    'no-console': 'error',
   },
 };

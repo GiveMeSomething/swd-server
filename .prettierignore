@@ -28,21 +28,14 @@ lerna-debug.log*
 *.sublime-workspace
 
 # IDE - VSCode
-.vscode
 .vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
 # Environment variables
 .env
 
 # Documentation
 documentation
-docs
-
-# Yarn
-.yarn/*
-!.yarn/cache
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
