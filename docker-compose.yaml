@@ -7,7 +7,7 @@ services:
     build:
       context: ./
       dockerfile: ./Dockerfile
-    command: /bin/sh -c "yarn; yarn run prisma migrate dev; yarn prisma:gen; yarn start:prod"
+    command: /bin/sh -c "yarn; yarn run prisma migrate dev; yarn prisma:gen; yarn start:dev"
     ports:
       - "8080:8080"
     volumes:
