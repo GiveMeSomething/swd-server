@@ -52,8 +52,14 @@ export class AuthService {
     }
 
     // Log email to prevent spamming
-    await this.prisma.emailLog.create({
-      data: {
+    await this.prisma.emailLog.upsert({
+      where: {
+        email,
+      },
+      update: {
+        timestamp: getUnixTs(),
+      },
+      create: {
         email,
         timestamp: getUnixTs(),
       },
