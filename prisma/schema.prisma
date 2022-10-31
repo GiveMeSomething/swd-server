@@ -11,14 +11,166 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  USER
+  TEACHER
+}
+
+enum LessonType {
+  SUBJECT_TOPIC
+  LESSON
+  QUIZ
+}
+
+enum Status {
+  ENABLED
+  DISABLED
+}
+
+enum DimensionType {
+  DOMAIN
+  GROUP
+}
+
+enum QuizLevel {
+  EASY
+  MEDIUM
+  HARD
+}
+
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
   password String
+  role     Role
+  blogs    Blog[]
+  Course   Course[]
 }
 
 model EmailLog {
   id        Int    @id @default(autoincrement())
   email     String @unique
   timestamp Int
+}
+
+model Blog {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Course {
+  id            Int            @id @default(autoincrement())
+  title         String
+  content       String
+  description   String
+  courseStatus  Status
+  author        User           @relation(fields: [authorId], references: [id])
+  authorId      Int
+  isFeatured    Boolean
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  lessons       Lesson[]
+  quizzes       Quiz[]
+  categories    Category[]
+  pricePackages PricePackage[]
+  dimensions    Dimension[]
+}
+
+model PricePackage {
+  id          Int      @id @default(autoincrement())
+  name        Int
+  description String
+  listPrice   Float
+  salePrice   Float
+  course      Course   @relation(fields: [courseId], references: [id])
+  courseId    Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Dimension {
+  id            Int           @id @default(autoincrement())
+  name          String
+  description   String
+  dimensionType DimensionType
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  Course        Course?       @relation(fields: [courseId], references: [id])
+  courseId      Int?
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Course      Course?  @relation(fields: [courseId], references: [id])
+  courseId    Int?
+}
+
+model LessonTopic {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  lessons     Lesson[]
+}
+
+model Lesson {
+  id            Int          @id @default(autoincrement())
+  title         String
+  content       String
+  type          LessonType
+  courseId      Int
+  course        Course       @relation(fields: [courseId], references: [id])
+  authorId      Int
+  order         Int
+  videoLink     String
+  htmlContent   String
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  LessonTopic   LessonTopic? @relation(fields: [lessonTopicId], references: [id])
+  lessonTopicId Int?
+}
+
+model Quiz {
+  id         Int        @id @default(autoincrement())
+  title      String
+  content    String
+  courseId   Int
+  duration   Int
+  passGrade  Int
+  quizStatus Status
+  quizLevel  QuizLevel
+  course     Course     @relation(fields: [courseId], references: [id])
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  questions  Question[]
+}
+
+model Question {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  quizId    Int
+  quiz      Quiz     @relation(fields: [quizId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  answers   Answer[]
+}
+
+model Answer {
+  id         Int      @id @default(autoincrement())
+  title      String
+  content    String
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
