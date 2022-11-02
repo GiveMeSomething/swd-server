@@ -10,6 +10,7 @@ import { SecuredUser } from './types';
 import { RegisterDto } from './types/auth.dto';
 import { getUnixTs } from 'src/utils/time';
 import { MailSendFailedException } from 'src/common/exceptions/mail.exception';
+import { Role } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -34,6 +35,7 @@ export class AuthService {
       data: {
         email,
         password,
+        role: Role.USER,
       },
     });
 
