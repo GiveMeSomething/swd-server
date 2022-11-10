@@ -55,13 +55,19 @@ model EmailLog {
 }
 
 model Blog {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         Int            @id @default(autoincrement())
+  title      String
+  content    String
+  author     User           @relation(fields: [authorId], references: [id])
+  authorId   Int
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  categories BlogCategory[]
+}
+
+model BlogCategory {
+  id   Int    @id @default(autoincrement())
+  blog Blog[]
 }
 
 model Course {
